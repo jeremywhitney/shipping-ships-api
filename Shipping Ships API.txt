@@ -1,0 +1,62 @@
+title Shipping Ships API
+
+participant Client (Postman)
+participant JSONServer (json-server.py)
+participant HandleRequests (nss-handler.py)
+participant dock_view.py
+participant hauler_view.py
+participant ship_view.py
+participant Database
+
+Client (Postman)->>JSONServer (json-server.py): GET request to "/docks"
+JSONServer: Run do_GET() method
+abox over JSONServer (json-server.py):Run do_GET() method
+alt If no primary key (list all docks)
+    JSONServer (json-server.py)->>dock_view.py: Call list_docks()
+    dock_view.py->>Database: Query Dock table for all docks
+    Database-->>dock_view.py: Return all dock data
+    dock_view.py-->>JSONServer (json-server.py): Send serialized dock data (JSON)
+else If primary key is present (retrieve specific dock)
+    JSONServer (json-server.py)->>dock_view.py: Call retrieve_dock(pk)
+    dock_view.py->>Database: Query Dock table for specific dock
+    Database-->>dock_view.py: Return specific dock data
+    dock_view.py-->>JSONServer (json-server.py): Send serialized dock data (JSON)
+end
+JSONServer (json-server.py)->>HandleRequests (nss-handler.py): Use response() to send data
+HandleRequests (nss-handler.py)-->>Client (Postman): Return dock data (in JSON format)
+
+Client (Postman)->>JSONServer (json-server.py): GET request to "/haulers"
+JSONServer: Run do_GET() method
+abox over JSONServer (json-server.py):Run do_GET() method
+alt If no primary key (list all haulers)
+    JSONServer (json-server.py)->>hauler_view.py: Call list_haulers()
+    hauler_view.py->>Database: Query Hauler table for all haulers
+    Database-->>hauler_view.py: Return all hauler data
+    hauler_view.py-->>JSONServer (json-server.py): Send serialized hauler data (JSON)
+else If primary key is present (retrieve specific hauler)
+    JSONServer (json-server.py)->>hauler_view.py: Call retrieve_hauler(pk)
+    hauler_view.py->>Database: Query Hauler table for specific hauler
+    Database-->>hauler_view.py: Return specific hauler data
+    hauler_view.py-->>JSONServer (json-server.py): Send serialized hauler data (JSON)
+end
+JSONServer (json-server.py)->>HandleRequests (nss-handler.py): Use response() to send data
+HandleRequests (nss-handler.py)-->>Client (Postman): Return hauler data (in JSON format)
+
+Client (Postman)->>JSONServer (json-server.py): GET request to "/ships"
+JSONServer: Run do_GET() method
+abox over JSONServer (json-server.py):Run do_GET() method
+alt If no primary key (list all ships)
+    JSONServer (json-server.py)->>ship_view.py: Call list_ships()
+    ship_view.py->>Database: Query Ship table for all ships
+    Database-->>ship_view.py: Return all ship data
+    ship_view.py-->>JSONServer (json-server.py): Send serialized ship data (JSON)
+else If primary key is present (retrieve specific ship)
+    JSONServer (json-server.py)->>ship_view.py: Call retrieve_ship(pk)
+    ship_view.py->>Database: Query Ship table for specific ship
+    Database-->>ship_view.py: Return specific ship data
+    ship_view.py-->>JSONServer (json-server.py): Send serialized ship data (JSON)
+end
+JSONServer (json-server.py)->>HandleRequests (nss-handler.py): Use response() to send data
+HandleRequests (nss-handler.py)-->>Client (Postman): Return ship data (in JSON format)
+
+bottomparticipants
