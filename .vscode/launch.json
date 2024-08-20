@@ -6,7 +6,7 @@
     "configurations": [
         {
             "name": "JSON Server",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "json-server.py",
             "justMyCode": true,
